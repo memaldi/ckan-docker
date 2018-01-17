@@ -12,6 +12,10 @@ COPY production.ini /etc/ckan/default/production.ini
 
 RUN ln -s /src/ckan/who.ini /etc/ckan/default/who.ini
 
+RUN mkdir /extensions
+
+VOLUME /extensions
+
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

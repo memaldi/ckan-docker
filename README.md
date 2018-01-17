@@ -56,7 +56,7 @@ Build and launch CKAN instance:
 
 ```
 $ cd ckan
-$ docker build -t memaldi/ckan .
+$ docker build -t memaldi/ckan:2.7.2 .
 $ docker run -d --network ckan --name ckan -p 80:5000 memaldi/ckan:2.7.2
 ```
 
