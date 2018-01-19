@@ -8,27 +8,22 @@ This repository contains Dockerfiles for creating a [CKAN](http://ckan.org) inst
 $ docker run -d --network ckan --name ckan-redis redis:3-alpine
 ```
 
-### Build and lauch postgres instance
+### Lauch postgres instance
 
-**NOTE**: At this time, ckan_default user password must be manually modified at `postgres/datastore.sh`.
-
-```
-#!/bin/bash
-set -e
-
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-  CREATE DATABASE ckan_default;
- 	CREATE USER ckan_default WITH LOGIN PASSWORD '<ckan_default>';
-  GRANT ALL PRIVILEGES ON DATABASE ckan_default TO ckan_default ;
-EOSQL
-```
-
-Build and launch the image from repository.
+Launch a postgres container.
 
 ```
-$ cd postgres
-$ docker build -t memaldi/ckan-postgres .
-$ docker run --name ckan-db --network ckan -e POSTGRES_PASSWORD=ckan-postgres -d memaldi/ckan-postgres
+$ docker run --name ckan-db --network ckan -e POSTGRES_PASSWORD=ckan-postgres -d postgres
+```
+
+Create CKAN databases and user:
+
+```
+$ docker exec -ti ckan-db /bin/bash
+$ su postgres
+$ psql
+$ CREATE USER ckan_default WITH LOGIN PASSWORD '<ckan_default_password>';
+$
 ```
 
 ### Lauch solr instance
