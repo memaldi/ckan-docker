@@ -8,7 +8,9 @@ RUN pip install setuptools==36.1
 RUN pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.7.2#egg=ckan'
 RUN pip install -r /src/ckan/requirements.txt
 
-COPY production.ini /etc/ckan/default/production.ini
+WORKDIR /src/ckan
+
+RUN paster make-config ckan /etc/ckan/default/production.ini
 
 RUN ln -s /src/ckan/who.ini /etc/ckan/default/who.ini
 

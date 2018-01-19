@@ -45,19 +45,15 @@ $ docker build -t memaldi/ckan-solr .
 
 ### Build and launch CKAN instance
 
-Modify database settings at `ckan/production.ini` file:
+Use [Environment Variables supported by CKAN](http://docs.ckan.org/en/ckan-2.7.2/maintaining/configuration.html#ckan-configuration-file) for customizing your \*.ini file.
+The following ones are mandatory: `CKAN_SQLALCHEMY_URL`, `CKAN_SOLR_URL`, `CKAN_REDIS_URL`, `CKAN_SITE_URL` and `CKAN_STORAGE_PATH`.
 
-```
-## Database Settings
-sqlalchemy.url = postgresql://ckan_default:ckan_default@ckan-db/ckan_default
-```
-
-Build and launch CKAN instance:
+It's highly recommended to create a volume at `CKAN_STORAGE_PATH` dir, in which resources are stored.
 
 ```
 $ cd ckan
 $ docker build -t memaldi/ckan:2.7.2 .
-$ docker run -d --network ckan --name ckan -p 80:5000 memaldi/ckan:2.7.2
+$ docker run -d --network ckan --name ckan -p 80:5000 -e CKAN_SQLALCHEMY_URL=postgresql://<ckan_db_user>:<ckan_db_password>@ckan-db/<ckan_db_name> -e CKAN_SOLR_URL=http://ckan-solr:8983/solr/ckan -e CKAN_REDIS_URL=redis://ckan-redis:6379/0 -e CKAN_SITE_URL=http://localhost -e CKAN_STORAGE_PATH=/var/lib/ckan -v <host_data_dir>:/var/lib/ckan -v <host_conf_dir>:/etc/ckan/default memaldi/ckan:2.7.2
 ```
 
 ### Create an admin CKAN user
