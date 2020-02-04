@@ -18,6 +18,8 @@ RUN mkdir /extensions
 
 VOLUME /extensions
 
+RUN chmod -R a+rwx /src/ckan/
+
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
